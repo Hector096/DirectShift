@@ -1,4 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
+  before_action :check_valid_referral
   respond_to :json
 
   private
@@ -9,12 +10,19 @@ class RegistrationsController < Devise::RegistrationsController
     register_failed
   end
 
+  def check_valid_referral
+    @user = User.exists?(:referral => params['referral'])
+     @user ? register_success : register_failed
+  end
+
   def register_success
+    @user.referral = SecureRandom.base64(5)
+    @user.save
     render json: { message: 'Signed up sucessfully,', user: @user }
   end
 
   def register_failed
-    render json: { message: "Something went wrong. #{resource.errors.full_messages.to_sentence}" }
+    render json: { message: "Something went wrong. Maybe your referral code is invalid or user already exist!" }
   end
 
   def sign_up_params

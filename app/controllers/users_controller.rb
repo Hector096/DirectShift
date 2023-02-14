@@ -1,17 +1,20 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user! only: :user_logged_in
   def user_logged_in
     @user = current_user
     render json: {
-      user: @user,
-      orders: @user.orders
+      user: @user
     }
   end
 
-  def index
-    @users = User.all
+  def invite
+    @user = current_user
+    email = params['email']
+    ReferralMailer.send_referral(email,@user).deliver_now
     render json: {
-      users: @users
+      message: 'Invite Sent!'
     }
   end
+
+
 end

@@ -10,9 +10,7 @@ Rails.application.routes.draw do
                  sessions: 'sessions',
                  registrations: 'registrations'
                }
-  resources :categories
-  resources :users do
-    resources :orders, only: %i[index show destroy]
-  end
+  get 'user/invite', to: 'users#invite'
+
   get "/current_user", to: "users#user_logged_in"
 end
