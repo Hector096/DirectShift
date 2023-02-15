@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user! only: :user_logged_in
+  before_action :authenticate_user!
   def user_logged_in
     @user = current_user
     render json: {
@@ -10,11 +10,15 @@ class UsersController < ApplicationController
   def invite
     @user = current_user
     email = params['email']
-    ReferralMailer.send_referral(email,@user).deliver_now
-    render json: {
-      message: 'Invite Sent!'
-    }
+    begin
+      ReferralMailer.send_referral(email,@user.referral).deliver_now
+      render json: {
+        message: 'Invite Sent!'
+      }
+      rescue Exception => exc
+        render json: {
+          message: 'Failed to sent invite!',
+        },:status => 401
+      end
   end
-
-
 end

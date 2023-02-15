@@ -15,7 +15,13 @@ To get a local copy run the following steps:
 -   Clone the project using this link `https://github.com/Hector096/DirectShift.git`
 -   Browse into the project's directory using `cd DirectShift`
 -   To install all the dependencies use `bundle install`
--   To start the server, run `rails s`
+-   Setup postgres development database using pgadmin or console
+-   Create `local_env.yml` file in `\config` folder and add below listed eniviroment variable:
+    `DB_PASS: "Your Database Password"`
+    `MAIL_PASS: "your gmail app password"`
+    `MAIL_USERNAME: "your Email Id"`
+-   Run `rails db:migrate`
+-   To start the server, run `rails s -p 3001`
 
 ## Authors
 

@@ -10,7 +10,7 @@ Rails.application.routes.draw do
                  sessions: 'sessions',
                  registrations: 'registrations'
                }
-  get 'user/invite', to: 'users#invite'
+  post 'user/invite', to: 'users#invite'
 
   get "/current_user", to: "users#user_logged_in"
 end
